@@ -1,7 +1,11 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "nextjs",
-  "buildCommand": "pnpm turbo build --filter=@beseen/web...",
+  "version": 2,
+  "builds": [
+    {
+      "src": "apps/web/package.json",
+      "use": "@vercel/next"
+    }
+  ],
   "installCommand": "pnpm install",
-  "ignoreCommand": "npx turbo-ignore"
+  "buildCommand": "pnpm turbo build --filter=@beseen/web"
 }
