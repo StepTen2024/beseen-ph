@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Bioluminescent Design System */
+  --midnight-void: #0f172a;
+  --midnight-deep: #020617;
+  --electric-orchid: #d946ef;
+  --electric-orchid-glow: rgba(217, 70, 239, 0.4);
+  --neon-cyan: #06b6d4;
+  --neon-cyan-glow: rgba(6, 182, 212, 0.4);
+  --glass-white: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+}
+
+@theme inline {
+  --color-background: var(--midnight-void);
+  --color-foreground: var(--text-primary);
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overscroll-behavior-y: none; /* Prevent rubber-banding of the whole page */
+  -webkit-tap-highlight-color: transparent; /* Remove blue tap box on mobile */
+}
+
+body {
+  background: linear-gradient(135deg, var(--midnight-deep) 0%, var(--midnight-void) 50%, #1e1b4b 100%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  touch-action: manipulation; /* Improves touch response */
+  overflow-x: hidden; /* Prevent horizontal drift */
+}
+
+/* Global utility to hide scrollbars but keep functionality */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  background: var(--glass-white);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Neon Glow Effects */
+.glow-orchid {
+  box-shadow: 0 0 20px var(--electric-orchid-glow),
+              0 0 40px rgba(217, 70, 239, 0.2);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 20px var(--neon-cyan-glow),
+              0 0 40px rgba(6, 182, 212, 0.2);
+}
+
+.text-glow-orchid {
+  text-shadow: 0 0 20px var(--electric-orchid-glow),
+               0 0 40px rgba(217, 70, 239, 0.3);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 20px var(--neon-cyan-glow),
+               0 0 40px rgba(6, 182, 212, 0.3);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--electric-orchid) 0%, var(--neon-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated Background Gradient */
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animated-bg {
+  background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #0f172a);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* Pulse Animation for Loading */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Terminal Cursor Blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: '▋';
+  animation: blink 1s infinite;
+  color: var(--neon-cyan);
+  margin-left: 2px;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--midnight-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--electric-orchid), var(--neon-cyan));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--electric-orchid);
+}
+
+/* Selection Styling */
+::selection {
+  background: var(--electric-orchid-glow);
+  color: var(--text-primary);
+}
