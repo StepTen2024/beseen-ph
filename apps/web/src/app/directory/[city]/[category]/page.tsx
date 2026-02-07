@@ -38,7 +38,7 @@ export default async function DirectoryCategoryPage({ params }: DirectoryPagePro
 
   if (!cityData || !categoryData) notFound();
 
-  const listings = await getMockBusinesses(citySlug, categorySlug);
+  const listings = await getMockBusinesses();
   const total = listings.length;
 
   return (
@@ -75,7 +75,7 @@ export default async function DirectoryCategoryPage({ params }: DirectoryPagePro
             </div>
 
             <DirectoryList
-              listings={listings}
+              listings={listings as any}
               total={total}
               city={cityData.city}
               category={categoryData}

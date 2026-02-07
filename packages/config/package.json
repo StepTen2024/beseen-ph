@@ -2,5 +2,11 @@
   "name": "@beseen/config",
   "version": "0.0.1",
   "private": true,
-  "files": ["tailwind.config.ts", "postcss.config.js", "eslint.config.mjs"]
+  "exports": {
+    "./tailwind": "./tailwind.config.ts",
+    "./postcss": "./postcss.config.js"
+  },
+  "scripts": {
+    "build": "echo 'Config package - no build needed'"
+  }
 }

@@ -1,205 +1,130 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, Zap, Crown, Shield, ArrowRight, CreditCard, Sparkles } from 'lucide-react';
+import { Check, Zap, Crown, Rocket, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 const TIERS = [
   {
-    id: 'free',
     name: 'Tingiy',
-    tagline: 'Just a taste',
+    tagline: 'Free forever',
     price: 0,
-    current: true,
+    period: '',
     features: [
-      'Basic listing on map',
-      '1 AI post per week',
-      'Community access',
-      '30-day active status',
+      'Basic business listing',
+      'Contact information display',
+      'Customer reviews',
+      'Business hours',
     ],
-    color: 'slate',
-    icon: Shield,
-  },
-  {
-    id: 'starter',
-    name: 'Seryoso',
-    tagline: 'For real growth',
-    price: 499,
-    popular: true,
-    features: [
-      'Everything in Tingiy',
-      'Daily AI content (30 posts/mo)',
-      'Facebook catalog ads',
-      'Google Display ads',
-      '1 article per month',
-      'Analytics dashboard',
-      'Priority listing',
-    ],
-    color: 'emerald',
+    cta: 'Get Started',
+    popular: false,
     icon: Zap,
   },
   {
-    id: 'growth',
-    name: 'Malakas',
-    tagline: 'Scale faster',
-    price: 1000,
+    name: 'Seryoso',
+    tagline: 'For growing businesses',
+    price: 499,
+    period: '/month',
     features: [
-      'Everything in Seryoso',
-      'Unlimited AI posts',
-      '3 articles per month',
-      'SEO optimization',
-      'Competitor insights',
-      'Dedicated ad budget',
+      'Everything in Tingiy',
+      'AI-generated social posts',
+      'Featured in city listings',
+      'Analytics dashboard',
       'Priority support',
+      '50 Gold Tokens/month',
     ],
-    color: 'cyan',
-    icon: Sparkles,
+    cta: 'Start Free Trial',
+    popular: true,
+    icon: Crown,
   },
   {
-    id: 'premium',
-    name: 'Boss',
-    tagline: 'Total domination',
-    price: 5000,
+    name: 'Bossing',
+    tagline: 'For market leaders',
+    price: 1499,
+    period: '/month',
     features: [
-      'Everything in Malakas',
-      'Full custom website',
-      'Logo & branding',
-      'Professional copywriting',
-      'Multi-branch support',
+      'Everything in Seryoso',
+      'Dedicated account manager',
+      'Custom AI voice & content',
+      'Multi-location support',
       'API access',
-      'White-glove onboarding',
+      '200 Gold Tokens/month',
+      'White-label options',
     ],
-    color: 'amber',
-    icon: Crown,
+    cta: 'Contact Sales',
+    popular: false,
+    icon: Rocket,
   },
 ];
 
 export default function SubscriptionPage() {
-  const [selectedTier, setSelectedTier] = useState<string | null>(null);
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
-
   return (
-    <div className="min-h-screen bg-[#030712] text-white pb-24">
-      <header className="sticky top-0 z-40 bg-[#030712]/80 backdrop-blur-xl border-b border-white/5">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <h1 className="text-xl font-bold">Upgrade Your Plan</h1>
-          <p className="text-slate-400 text-sm">Grow faster with premium features</p>
-        </div>
-      </header>
+    <main className="min-h-screen bg-[#030712] text-white py-20">
+      <div className="max-w-6xl mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-16"
+        >
+          <h1 className="text-4xl md:text-5xl font-black mb-4">
+            Choose Your <span className="text-fuchsia-400">Power Level</span>
+          </h1>
+          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+            From free listings to AI-powered marketing machines. Pick what works for your business.
+          </p>
+        </motion.div>
 
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        {/* Billing Toggle */}
-        <div className="flex justify-center mb-12">
-          <div className="inline-flex p-1 rounded-xl bg-slate-800/50">
-            {['monthly', 'yearly'].map((cycle) => (
-              <button
-                key={cycle}
-                onClick={() => setBillingCycle(cycle as 'monthly' | 'yearly')}
-                className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
-                  billingCycle === cycle
-                    ? 'bg-fuchsia-600 text-white'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                {cycle === 'monthly' ? 'Monthly' : 'Yearly (2 months free)'}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Pricing Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {TIERS.map((tier, index) => (
+        <div className="grid md:grid-cols-3 gap-8">
+          {TIERS.map((tier, i) => (
             <motion.div
-              key={tier.id}
+              key={tier.name}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className={`relative p-6 rounded-3xl border transition-all ${
+              transition={{ delay: i * 0.1 }}
+              className={`relative p-8 rounded-3xl border ${
                 tier.popular
-                  ? 'bg-emerald-900/20 border-emerald-500/50 scale-105'
-                  : tier.current
-                  ? 'bg-slate-900/30 border-slate-700'
-                  : 'bg-slate-900/50 border-slate-800 hover:border-slate-600'
+                  ? 'bg-gradient-to-b from-fuchsia-900/30 to-slate-900/50 border-fuchsia-500/50'
+                  : 'bg-slate-900/50 border-slate-800'
               }`}
             >
               {tier.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-emerald-500 text-xs font-bold">
-                  MOST POPULAR
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-fuchsia-600 rounded-full text-sm font-bold">
+                  Most Popular
                 </div>
               )}
-              {tier.current && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-600 text-xs font-bold">
-                  CURRENT PLAN
-                </div>
-              )}
-
-              <div className="text-center mb-6">
-                <tier.icon className={`w-10 h-10 mx-auto mb-3 ${
-                  tier.color === 'emerald' ? 'text-emerald-400' :
-                  tier.color === 'cyan' ? 'text-cyan-400' :
-                  tier.color === 'amber' ? 'text-amber-400' :
-                  'text-slate-400'
-                }`} />
-                <h3 className="text-xl font-bold">{tier.name}</h3>
-                <p className="text-slate-500 text-sm">{tier.tagline}</p>
+              
+              <tier.icon className={`w-10 h-10 mb-4 ${tier.popular ? 'text-fuchsia-400' : 'text-slate-400'}`} />
+              <h2 className="text-2xl font-bold mb-1">{tier.name}</h2>
+              <p className="text-slate-500 text-sm mb-4">{tier.tagline}</p>
+              
+              <div className="mb-6">
+                <span className="text-4xl font-black">₱{tier.price}</span>
+                <span className="text-slate-400">{tier.period}</span>
               </div>
 
-              <div className="text-center mb-6">
-                <span className="text-4xl font-black">
-                  {tier.price === 0 ? 'Free' : `₱${tier.price.toLocaleString()}`}
-                </span>
-                {tier.price > 0 && <span className="text-slate-500">/mo</span>}
-              </div>
-
-              <ul className="space-y-3 mb-6">
-                {tier.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm">
-                    <Check className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
-                      tier.color === 'emerald' ? 'text-emerald-400' :
-                      tier.color === 'cyan' ? 'text-cyan-400' :
-                      tier.color === 'amber' ? 'text-amber-400' :
-                      'text-slate-500'
-                    }`} />
+              <ul className="space-y-3 mb-8">
+                {tier.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-2 text-sm">
+                    <Check className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
                     <span className="text-slate-300">{feature}</span>
                   </li>
                 ))}
               </ul>
 
-              <button
-                disabled={tier.current}
-                className={`w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${
-                  tier.current
-                    ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                    : tier.popular
-                    ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
+              <Link
+                href="/claim"
+                className={`w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 ${
+                  tier.popular
+                    ? 'bg-fuchsia-600 hover:bg-fuchsia-500 text-white'
                     : 'bg-slate-800 hover:bg-slate-700 text-white'
                 }`}
               >
-                {tier.current ? 'Current Plan' : (
-                  <>Upgrade <ArrowRight className="w-4 h-4" /></>
-                )}
-              </button>
+                {tier.cta} <ArrowRight className="w-4 h-4" />
+              </Link>
             </motion.div>
           ))}
         </div>
-
-        {/* Payment Methods */}
-        <div className="mt-12 p-6 rounded-2xl bg-slate-900/30 border border-slate-800">
-          <div className="flex items-center gap-4 mb-4">
-            <CreditCard className="w-6 h-6 text-slate-400" />
-            <div>
-              <h3 className="font-bold">Payment Methods</h3>
-              <p className="text-slate-500 text-sm">GCash, Maya, Credit Card, Bank Transfer</p>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <div className="px-4 py-2 rounded-lg bg-blue-600/20 text-blue-400 text-sm font-medium">GCash</div>
-            <div className="px-4 py-2 rounded-lg bg-green-600/20 text-green-400 text-sm font-medium">Maya</div>
-            <div className="px-4 py-2 rounded-lg bg-slate-600/20 text-slate-400 text-sm font-medium">Credit Card</div>
-          </div>
-        </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }

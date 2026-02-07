@@ -1,35 +1,25 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { AuthProvider } from "@/components/auth";
-import MobileBottomNav from "@/components/layout/MobileBottomNav";
-import SmoothScroll from "@/components/ui/SmoothScroll";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+
+export const dynamic = 'force-dynamic';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Be Seen.ph - AI-Powered Marketing for Filipino Businesses",
-  description: "Transform your business with AI-generated social media content. Get 30 days of professional Facebook posts in seconds.",
-  keywords: ["social media marketing", "Philippines", "AI content", "Facebook posts", "small business"],
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  }
+  title: 'BE SEEN Business',
+  description: 'Manage your business on BE SEEN.PH',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className="antialiased min-h-screen overflow-x-hidden selection:bg-emerald-500/30 touch-manipulation">
-        <AuthProvider>
-          <SmoothScroll>
-            {children}
-            <MobileBottomNav />
-          </SmoothScroll>
-        </AuthProvider>
+    <html lang="en" className="dark">
+      <body className={`${inter.className} bg-slate-950 text-white min-h-screen`}>
+        {children}
       </body>
     </html>
   );

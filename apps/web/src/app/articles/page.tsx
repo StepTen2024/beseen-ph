@@ -1,173 +1,182 @@
 /**
- * BE SEEN.PH - Articles Index Page
- * Phase 3: Content Site Engine
+ * BE SEEN.PH - Articles Listing Page
+ * Connected to Supabase for live data
  */
 
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Newspaper, ArrowRight, TrendingUp, Sparkles, Clock, Calendar } from 'lucide-react';
-import { MOCK_ARTICLES } from '@/lib/mock-data';
-import { ARTICLE_CATEGORIES } from '@/types/content';
+import { Suspense } from 'react';
+import { Newspaper, Clock, ArrowRight, Sparkles } from 'lucide-react';
+import { createClient } from '@/lib/supabase/server';
+import { getArticles } from '@beseen/database';
 
 export const metadata: Metadata = {
-    title: 'The Journal | Be Seen.ph',
-    description: 'Stories from the underground. Local guides, food reviews, and business insights from Pampanga.',
+  title: 'Articles & Stories | Be Seen.ph',
+  description: 'Discover local stories, business features, and community news from the Philippines.',
 };
 
-export default function ArticlesPage() {
-    const featuredArticle = MOCK_ARTICLES[0];
-    const recentArticles = MOCK_ARTICLES.slice(1);
+export const revalidate = 60;
 
+async function ArticlesList() {
+  const supabase = await createClient();
+  const { data: articles, error } = await getArticles(supabase, { 
+    status: 'published',
+    limit: 20 
+  });
+
+  if (error || !articles?.length) {
     return (
-        <div className="min-h-screen bg-[#030712] text-white">
-            {/* Cinematic Hero Section */}
-            <div className="relative h-[60vh] min-h-[500px] w-full overflow-hidden flex items-end">
-                <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/40 to-transparent z-10" />
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center animate-subtle-zoom opacity-50" />
-
-                <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 w-full text-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 backdrop-blur-md mb-6 hover:bg-fuchsia-500/20 transition-colors cursor-pointer">
-                        <Newspaper className="w-4 h-4 text-fuchsia-400" />
-                        <span className="text-sm font-bold text-fuchsia-200 tracking-wide uppercase">The Journal</span>
-                    </div>
-                    <h1 className="text-5xl md:text-8xl font-bold tracking-tighter mb-6 leading-none">
-                        Stories from <br className="hidden md:block" />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-pink-400 to-purple-400">The Underground.</span>
-                    </h1>
-                    <p className="text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
-                        No fluff. Just real guides, honest reviews, and the pulse of the city.
-                    </p>
-                </div>
-            </div>
-
-            <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 relative z-30 -mt-20">
-
-                {/* Categories Scroll */}
-                <div className="flex flex-wrap justify-center gap-3 mb-16">
-                    {ARTICLE_CATEGORIES.map((cat) => (
-                        <Link
-                            key={cat.slug}
-                            href={`/articles/category/${cat.slug}`}
-                            className="px-6 py-2 rounded-full bg-slate-900/80 backdrop-blur-md border border-white/10 text-slate-300 hover:text-white hover:border-fuchsia-500/50 hover:bg-fuchsia-500/10 transition-all text-sm font-bold uppercase tracking-wider shadow-lg"
-                        >
-                            {cat.name}
-                        </Link>
-                    ))}
-                </div>
-
-                {/* Featured Content (Grid Layout) */}
-                <div className="grid lg:grid-cols-2 gap-8 mb-20">
-                    {/* Main Feature */}
-                    <Link href={`/articles/${featuredArticle.slug}`} className="group relative h-[500px] lg:h-auto rounded-3xl overflow-hidden border border-white/5 bg-slate-900/40 hover:border-fuchsia-500/30 transition-all">
-                        <div className="absolute inset-0">
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent z-10" />
-                            <img
-                                src={featuredArticle.featured_image}
-                                alt={featuredArticle.title}
-                                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                        </div>
-                        <div className="absolute inset-0 z-20 flex flex-col justify-end p-8 md:p-12">
-                            <div className="flex items-center gap-3 mb-4">
-                                <span className="px-3 py-1 rounded bg-fuchsia-600 text-white text-xs font-bold uppercase tracking-wider shadow-lg">
-                                    Feature Story
-                                </span>
-                                <span className="text-slate-300 text-xs font-bold uppercase tracking-wider flex items-center gap-1">
-                                    <Clock className="w-3 h-3" /> 5 min read
-                                </span>
-                            </div>
-                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight group-hover:text-fuchsia-200 transition-colors">
-                                {featuredArticle.title}
-                            </h2>
-                            <p className="text-lg text-slate-300 line-clamp-2 max-w-xl">
-                                {featuredArticle.excerpt}
-                            </p>
-                        </div>
-                    </Link>
-
-                    {/* Secondary Features (Vertical Stack) */}
-                    <div className="flex flex-col gap-8">
-                        {recentArticles.slice(0, 2).map((article) => (
-                            <Link
-                                key={article.slug}
-                                href={`/articles/${article.slug}`}
-                                className="group relative flex-1 min-h-[240px] rounded-3xl overflow-hidden border border-white/5 bg-slate-900/40 hover:border-fuchsia-500/30 transition-all flex"
-                            >
-                                <div className="absolute inset-0 z-0">
-                                    <img
-                                        src={article.featured_image}
-                                        alt={article.title}
-                                        className="h-full w-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-105"
-                                    />
-                                    <div className="absolute inset-0 bg-slate-950/70 group-hover:bg-slate-950/60 transition-colors" />
-                                </div>
-
-                                <div className="relative z-10 p-8 flex flex-col justify-center">
-                                    <div className="flex items-center gap-3 mb-3">
-                                        <span className="text-fuchsia-400 text-xs font-bold uppercase tracking-wider">
-                                            {article.category}
-                                        </span>
-                                    </div>
-                                    <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-fuchsia-200 transition-colors leading-tight">
-                                        {article.title}
-                                    </h3>
-                                    <div className="flex items-center gap-2 text-sm font-medium text-slate-300 group-hover:text-white transition-colors">
-                                        Read Story <ArrowRight className="w-4 h-4" />
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-
-                {/* All Stories Grid */}
-                <section>
-                    <div className="flex items-end justify-between mb-8 border-b border-white/5 pb-4">
-                        <h2 className="text-3xl font-bold text-white flex items-center gap-3">
-                            <TrendingUp className="h-6 w-6 text-emerald-500" /> Recent Uploads
-                        </h2>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {recentArticles.slice(2).map((article) => (
-                            <Link
-                                key={article.slug}
-                                href={`/articles/${article.slug}`}
-                                className="group flex flex-col bg-slate-900/30 rounded-3xl border border-white/5 overflow-hidden hover:border-fuchsia-500/30 hover:bg-slate-900/50 transition-all h-full"
-                            >
-                                <div className="aspect-[4/3] w-full overflow-hidden relative">
-                                    <div className="absolute top-4 left-4 z-10">
-                                        <span className="px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur border border-white/10 text-white text-xs font-bold uppercase tracking-wider">
-                                            {article.category}
-                                        </span>
-                                    </div>
-                                    <img
-                                        src={article.featured_image}
-                                        alt={article.title}
-                                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                    />
-                                </div>
-                                <div className="p-8 flex flex-col flex-grow">
-                                    <div className="flex items-center gap-2 mb-4 text-xs font-medium text-slate-500 uppercase tracking-wider">
-                                        <Calendar className="w-3 h-3" />
-                                        {new Date(article.created_at || new Date()).toLocaleDateString()}
-                                    </div>
-                                    <h3 className="text-xl font-bold text-white mb-4 group-hover:text-fuchsia-400 transition-colors leading-snug">
-                                        {article.title}
-                                    </h3>
-                                    <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
-                                        <span className="text-slate-400 text-sm">{article.author}</span>
-                                        <span className="flex items-center gap-1 text-sm font-bold text-white group-hover:translate-x-1 transition-transform">
-                                            Read <ArrowRight className="w-3 h-3" />
-                                        </span>
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                </section>
-
-            </div>
-        </div>
+      <div className="text-center py-20">
+        <Newspaper className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+        <h2 className="text-2xl font-bold mb-2">No Articles Yet</h2>
+        <p className="text-slate-500">Check back soon for local stories and business features.</p>
+      </div>
     );
+  }
+
+  const featuredArticle = articles[0];
+  const otherArticles = articles.slice(1);
+
+  return (
+    <div className="space-y-12">
+      {/* Featured Article */}
+      <Link 
+        href={`/articles/${featuredArticle.slug}`}
+        className="group block relative overflow-hidden rounded-3xl bg-slate-900"
+      >
+        <div className="aspect-[21/9] relative">
+          {featuredArticle.featured_image_url ? (
+            <img 
+              src={featuredArticle.featured_image_url} 
+              alt={featuredArticle.title}
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-900 to-purple-900" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-8">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="px-3 py-1 rounded-full bg-fuchsia-500 text-xs font-bold uppercase">
+                Featured
+              </span>
+              {featuredArticle.business && (
+                <span className="text-sm text-slate-300">
+                  by {(featuredArticle.business as any).name}
+                </span>
+              )}
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-3 group-hover:text-fuchsia-400 transition-colors">
+              {featuredArticle.title}
+            </h2>
+            {featuredArticle.excerpt && (
+              <p className="text-slate-300 text-lg max-w-2xl">{featuredArticle.excerpt}</p>
+            )}
+            <div className="flex items-center gap-4 mt-4 text-sm text-slate-400">
+              <span className="flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                {new Date(featuredArticle.published_at || featuredArticle.created_at).toLocaleDateString()}
+              </span>
+              <span>{featuredArticle.view_count.toLocaleString()} views</span>
+            </div>
+          </div>
+        </div>
+      </Link>
+
+      {/* Article Grid */}
+      {otherArticles.length > 0 && (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {otherArticles.map((article: any) => (
+            <Link 
+              key={article.id}
+              href={`/articles/${article.slug}`}
+              className="group block bg-slate-900/50 rounded-2xl overflow-hidden border border-slate-800 hover:border-fuchsia-500/50 transition-colors"
+            >
+              <div className="aspect-video relative">
+                {article.featured_image_url ? (
+                  <img 
+                    src={article.featured_image_url} 
+                    alt={article.title}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
+                    <Newspaper className="w-12 h-12 text-slate-600" />
+                  </div>
+                )}
+              </div>
+              <div className="p-5">
+                {article.business && (
+                  <span className="text-xs text-fuchsia-400 font-medium">
+                    {(article.business as any).name}
+                  </span>
+                )}
+                <h3 className="font-bold text-lg mt-1 mb-2 group-hover:text-fuchsia-400 transition-colors line-clamp-2">
+                  {article.title}
+                </h3>
+                {article.excerpt && (
+                  <p className="text-slate-400 text-sm line-clamp-2">{article.excerpt}</p>
+                )}
+                <div className="flex items-center gap-3 mt-4 text-xs text-slate-500">
+                  <span>{new Date(article.published_at || article.created_at).toLocaleDateString()}</span>
+                  <span>{article.view_count.toLocaleString()} views</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ArticlesSkeleton() {
+  return (
+    <div className="space-y-12">
+      <div className="aspect-[21/9] rounded-3xl bg-slate-800 animate-pulse" />
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div key={i} className="rounded-2xl bg-slate-800 animate-pulse">
+            <div className="aspect-video bg-slate-700" />
+            <div className="p-5 space-y-3">
+              <div className="h-4 bg-slate-700 rounded w-1/4" />
+              <div className="h-5 bg-slate-700 rounded w-3/4" />
+              <div className="h-4 bg-slate-700 rounded w-full" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function ArticlesPage() {
+  return (
+    <main className="min-h-screen bg-[#030712] text-white">
+      {/* Hero */}
+      <div className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-fuchsia-900/20 via-transparent to-transparent" />
+        <div className="relative max-w-7xl mx-auto px-4 md:px-8 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-fuchsia-500/30 bg-fuchsia-500/10 backdrop-blur-md mb-6">
+            <Sparkles className="w-4 h-4 text-fuchsia-400" />
+            <span className="text-sm font-bold text-fuchsia-200 tracking-wide uppercase">Stories</span>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            Local Stories &
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-cyan-400"> Features</span>
+          </h1>
+          <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+            Discover the stories behind your favorite local businesses and community highlights.
+          </p>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="max-w-7xl mx-auto px-4 md:px-8 pb-20">
+        <Suspense fallback={<ArticlesSkeleton />}>
+          <ArticlesList />
+        </Suspense>
+      </div>
+    </main>
+  );
 }

@@ -20,6 +20,15 @@ importers:
       '@beseen/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@supabase/ssr':
+        specifier: ^0.1.0
+        version: 0.1.0(@supabase/supabase-js@2.95.3)
+      '@supabase/supabase-js':
+        specifier: ^2.39.0
+        version: 2.95.3
+      clsx:
+        specifier: ^2.1.0
+        version: 2.1.1
       framer-motion:
         specifier: ^11.0.0
         version: 11.18.2(react-dom@18.3.1)(react@18.3.1)
@@ -35,6 +44,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      tailwind-merge:
+        specifier: ^2.2.0
+        version: 2.6.1
     devDependencies:
       '@beseen/config':
         specifier: workspace:*
@@ -69,6 +81,15 @@ importers:
       '@beseen/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@supabase/ssr':
+        specifier: ^0.1.0
+        version: 0.1.0(@supabase/supabase-js@2.95.3)
+      '@supabase/supabase-js':
+        specifier: ^2.39.0
+        version: 2.95.3
+      clsx:
+        specifier: ^2.1.0
+        version: 2.1.1
       framer-motion:
         specifier: ^11.0.0
         version: 11.18.2(react-dom@18.3.1)(react@18.3.1)
@@ -84,6 +105,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      tailwind-merge:
+        specifier: ^2.2.0
+        version: 2.6.1
     devDependencies:
       '@beseen/config':
         specifier: workspace:*
@@ -118,6 +142,15 @@ importers:
       '@beseen/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@supabase/ssr':
+        specifier: ^0.1.0
+        version: 0.1.0(@supabase/supabase-js@2.95.3)
+      '@supabase/supabase-js':
+        specifier: ^2.39.0
+        version: 2.95.3
+      clsx:
+        specifier: ^2.1.0
+        version: 2.1.1
       framer-motion:
         specifier: ^11.0.0
         version: 11.18.2(react-dom@18.3.1)(react@18.3.1)
@@ -133,6 +166,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      tailwind-merge:
+        specifier: ^2.2.0
+        version: 2.6.1
     devDependencies:
       '@beseen/config':
         specifier: workspace:*

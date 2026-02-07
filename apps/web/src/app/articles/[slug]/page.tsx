@@ -21,7 +21,7 @@ interface ArticlePageProps {
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const article = await getArticleBySlug(slug);
+  const article = await getArticleBySlug(slug) as any;
 
   if (!article) return { title: 'Article Not Found' };
 
@@ -29,25 +29,25 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 
   return {
     title: `${article.title} | Be Seen.ph`,
-    description: article.meta_description || article.excerpt,
-    keywords: article.keywords,
+    description: (article as any).meta_description || article.excerpt,
+    keywords: (article as any).keywords,
     openGraph: {
       title: article.title,
-      description: article.meta_description || article.excerpt,
+      description: (article as any).meta_description || article.excerpt,
       type: 'article',
       publishedTime: article.published_at,
-      images: article.featured_image ? [article.featured_image] : undefined,
+      images: (article as any).featured_image ? [(article as any).featured_image] : undefined,
     },
   };
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
-  const article = await getArticleBySlug(slug);
+  const article = await getArticleBySlug(slug) as any;
 
   if (!article) notFound();
 
-  const relatedArticles = await getRelatedArticles(article, 4);
+  const relatedArticles = await getRelatedArticles(article.category, 4);
   const category = ARTICLE_CATEGORIES.find(c => c.slug === article.category);
 
   return (
@@ -59,7 +59,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/60 to-transparent z-10" />
           <img
-            src={article.featured_image}
+            src={(article as any).featured_image}
             alt={article.title}
             className="h-full w-full object-cover animate-subtle-zoom"
           />
@@ -88,9 +88,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <div className="flex flex-wrap items-center gap-4 md:gap-8 text-sm md:text-base text-slate-300 font-medium">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center font-bold text-white text-xs">
-                {article.author ? article.author[0] : 'B'}
+                {article.author ? article.author?.name?.[0] : 'B'}
               </div>
-              <span>{article.author || 'Be Seen Editor'}</span>
+              <span>{article.author?.name || 'Be Seen Editor'}</span>
             </div>
 
             <div className="flex items-center gap-2">
@@ -133,7 +133,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 </div>
                 {article.tags && (
                   <div className="flex flex-wrap gap-2">
-                    {article.tags.map(tag => (
+                    {article.tags.map((tag: string) => (
                       <span key={tag} className="text-xs font-bold text-slate-500 uppercase">#{tag}</span>
                     ))}
                   </div>
@@ -145,7 +145,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             {relatedArticles.length > 0 && (
               <div className="mt-16">
                 <h3 className="text-2xl font-bold text-white mb-8 border-l-4 border-fuchsia-500 pl-4">Continue Reading</h3>
-                <RelatedArticles articles={relatedArticles} />
+                <RelatedArticles articles={relatedArticles as any} />
               </div>
             )}
           </div>

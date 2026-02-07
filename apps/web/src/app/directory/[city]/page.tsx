@@ -99,7 +99,7 @@ export default async function CityPage({ params }: CityPageProps) {
                 >
                   <div className="aspect-[4/3] w-full overflow-hidden">
                     <img
-                      src={article.featured_image}
+                      src={article.featuredImage}
                       alt={article.title}
                       className="h-full w-full object-cover"
                     />
@@ -129,7 +129,7 @@ export default async function CityPage({ params }: CityPageProps) {
                   <div className={`aspect-[21/9] w-full overflow-hidden ${i !== 0 ? 'aspect-video' : ''}`}>
                     <div className="absolute inset-0 bg-slate-900/20 z-10 group-hover:bg-transparent transition-colors" />
                     <img
-                      src={article.featured_image}
+                      src={article.featuredImage}
                       alt={article.title}
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />

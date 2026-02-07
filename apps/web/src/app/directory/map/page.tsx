@@ -41,7 +41,7 @@ export default function DirectoryMapPage() {
             </div>
 
             <div className="h-[calc(100vh-140px)] w-full relative">
-                <DirectoryMap listings={listings} />
+                <DirectoryMap businesses={listings} />
 
                 {/* Floating Search for Mobile */}
                 <div className="absolute top-4 left-4 right-4 sm:hidden z-[1000]">
