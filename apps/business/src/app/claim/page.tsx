@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -305,9 +306,12 @@ export default function ClaimBusinessPage() {
                 <p className="text-slate-400 text-sm">Use them to boost your listing or unlock premium features.</p>
               </div>
 
-              <button className="w-full py-4 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 font-bold transition-all">
+              <Link 
+                href="/dashboard"
+                className="w-full py-4 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 font-bold transition-all block text-center"
+              >
                 Go to Dashboard →
-              </button>
+              </Link>
             </motion.div>
           )}
         </AnimatePresence>

@@ -118,6 +118,17 @@ function AuthContent() {
                 />
               )}
             </motion.div>
+
+            {/* Demo Mode - Skip Auth for Testing */}
+            <div className="mt-6 p-4 rounded-xl border border-amber-500/30 bg-amber-500/10">
+              <p className="text-amber-400 text-xs text-center mb-3">🧪 Demo Mode - No Database</p>
+              <button
+                onClick={() => router.push('/dashboard')}
+                className="w-full py-3 rounded-lg bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 font-bold text-sm transition-all"
+              >
+                Skip to Dashboard Demo →
+              </button>
+            </div>
           </div>
         </div>
 
