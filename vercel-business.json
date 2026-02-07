@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm turbo build --filter=@beseen/business",
+  "outputDirectory": "apps/business/.next",
+  "installCommand": "pnpm install",
+  "framework": "nextjs"
+}
