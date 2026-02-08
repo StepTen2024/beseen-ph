@@ -10,5 +10,8 @@ export { default as HolographicCategoryCard } from './HolographicCategoryCard';
 export { default as Magnetic } from './Magnetic';
 export { default as SmoothScroll } from './SmoothScroll';
 
+// Layout components
+export * from './layouts';
+
 // Utils
 export { cn } from './utils';
