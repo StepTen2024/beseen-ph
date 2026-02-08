@@ -3,34 +3,39 @@
  * Mock data for development, connects to Supabase in production
  */
 
-export const ARTICLES = [
-  { 
-    id: '1', 
-    slug: 'best-pizza-angeles', 
-    title: 'Best Pizza in Angeles City', 
-    excerpt: 'We tried them all...', 
-    content: 'Full article content here...',
-    category: 'food',
-    city: 'Angeles City',
-    status: 'published',
-    published_at: new Date().toISOString(),
-    view_count: 0,
-    author: { name: 'BE SEEN Team' }
-  },
-  { 
-    id: '2', 
-    slug: 'nightlife-clark', 
-    title: 'Nightlife Guide: Clark', 
-    excerpt: 'Where to party...', 
-    content: 'Full article content here...',
-    category: 'nightlife',
-    city: 'Clark',
-    status: 'published',
-    published_at: new Date().toISOString(),
-    view_count: 0,
-    author: { name: 'BE SEEN Team' }
-  },
-];
+import sampleArticlesData from '@/data/sample-articles.json';
+
+// Article type for internal use
+export interface ArticleData {
+  id: string;
+  slug: string;
+  title: string;
+  meta_description: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  tags: string[];
+  keywords: string[];
+  city: string;
+  province: string;
+  is_local_content: boolean;
+  ai_generated: boolean;
+  ai_model: string;
+  status: string;
+  featured_image: string | null;
+  author: { name: string };
+  view_count: number;
+  share_count: number;
+  created_at: string;
+  updated_at: string;
+  published_at: string;
+}
+
+// Transform sample articles to match expected format
+export const ARTICLES: ArticleData[] = sampleArticlesData.map(article => ({
+  ...article,
+  author: { name: article.author }
+}));
 
 export const CATEGORIES = ['food', 'nightlife', 'travel', 'lifestyle'];
 export const CITIES = ['Angeles City', 'Clark', 'Pampanga', 'Manila'];
@@ -71,19 +76,31 @@ export async function searchArticles(query: string, limit = 20) {
   ).slice(0, limit);
 }
 
-export async function createArticle(data: Partial<typeof ARTICLES[0]>) {
-  const article = {
+export async function createArticle(data: Partial<ArticleData>): Promise<ArticleData> {
+  const now = new Date().toISOString();
+  const article: ArticleData = {
     id: String(Date.now()),
     slug: data.slug || '',
     title: data.title || '',
+    meta_description: data.meta_description || '',
     excerpt: data.excerpt || '',
     content: data.content || '',
     category: data.category || 'food',
+    tags: data.tags || [],
+    keywords: data.keywords || [],
     city: data.city || 'Angeles City',
+    province: data.province || 'Pampanga',
+    is_local_content: data.is_local_content ?? true,
+    ai_generated: data.ai_generated ?? false,
+    ai_model: data.ai_model || '',
     status: data.status || 'draft',
-    published_at: new Date().toISOString(),
-    view_count: 0,
-    author: { name: 'BE SEEN Team' }
+    featured_image: data.featured_image || null,
+    author: data.author || { name: 'BE SEEN Team' },
+    view_count: data.view_count || 0,
+    share_count: data.share_count || 0,
+    created_at: data.created_at || now,
+    updated_at: data.updated_at || now,
+    published_at: data.published_at || now,
   };
   ARTICLES.push(article);
   return article;
